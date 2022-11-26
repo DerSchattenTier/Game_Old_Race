@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Old_Race</string>
+    <string name="start">START</string>
+    <string name="exittext">Нажмите ещё раз чтобы выйти</string>
+    <string name="fire">FIRE</string>
+    <string name="left">LEFT</string>
+    <string name="right">RIGHT</string>
+    <string name="menu">MENU</string>
+</resources>
