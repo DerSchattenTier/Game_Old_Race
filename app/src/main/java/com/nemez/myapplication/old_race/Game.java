@@ -430,6 +430,7 @@ public class Game extends AppCompatActivity {
                 player.start();
                 if(bossHealth == 0){
                     isBoss = false;
+                    bossCoord = 0;
                     score = score +5;
                 }
             }
