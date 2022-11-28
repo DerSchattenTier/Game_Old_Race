@@ -327,7 +327,7 @@ public class Game extends AppCompatActivity {
             ImageView test5 = (ImageView) findViewById(ident5);
             test5.setImageResource(R.drawable.flamethrower);
         }
-        if(bossMove % 10 == 6){
+        if(bossMove % 10 == 6 && bossHealth < 15){
 
             for(int i = 2; i < 10; i++){
                 Resources res5 = getResources();
