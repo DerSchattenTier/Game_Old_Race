@@ -93,12 +93,16 @@ public class Game extends AppCompatActivity {
     int enemyCoord;
     boolean isEnemy = false;
     int enemyStart = 0;
+    //Босс
+    int bossCoord;
+    int bossHealth = 12;
+    boolean isBoss = false;
     //Очистка от пулемётной очереди
     ArrayList<Integer> antiFireList = new ArrayList<>();
     //Счёт игры
     int score = 0;
     //Скорость игры
-    int speed = 400;
+    int speed = 300;
     boolean fail = false;
     //Звуки
     MediaPlayer player = new MediaPlayer();
@@ -116,6 +120,15 @@ public class Game extends AppCompatActivity {
 
             //Машина
             car();
+
+            //Босс
+            if (score == 3 && !isBoss) {
+                isBoss = true;
+                bossCoord = 400;
+            }
+            if (isBoss){
+                boss();
+            }
 
             //Создание препятствий
             hole();
@@ -218,15 +231,87 @@ public class Game extends AppCompatActivity {
         test.setImageResource(R.drawable.car);
     }
 
+    //Босс
+    void boss(){
+
+        //Отображение
+        Resources res = getResources();
+        String str = "imageView" + bossCoord;
+        int ident = res.getIdentifier(str, "id", getPackageName());
+        ImageView test = (ImageView) findViewById(ident);
+        test.setImageDrawable(null);
+
+        //Перемещение
+        if(x >= 10 && x <= 12 || x > 15 && x < 18){
+            bossCoord = 400;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if (x >= 13 && x <= 15){
+            bossCoord = 300;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if(x >= 18){
+            bossCoord = 500;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+
+        //Стрельба Босса
+        if(x == 10 || x == 11){
+            Resources res5 = getResources();
+            String str5 = "imageView" + (bossCoord + 1);
+            int ident5 = res5.getIdentifier(str5, "id", getPackageName());
+            ImageView test5 = (ImageView) findViewById(ident5);
+            test5.setImageResource(R.drawable.flamethrower);
+        }
+        if(x == 12 && bossHealth < 10){
+
+            for(int i = 2; i < 10; i++){
+                Resources res5 = getResources();
+                String str5 = "imageView" + (bossCoord + i);
+                int ident5 = res5.getIdentifier(str5, "id", getPackageName());
+                ImageView test5 = (ImageView) findViewById(ident5);
+                test5.setImageResource(R.drawable.flamethrower);
+            }
+
+            //Попадание из огнемёта босса
+            if(carPosition == 409){
+                bang();
+            }
+        }
+
+        //Очистка поля от огнемёта
+        if(x == 13){
+            for(int i = 1; i < 10; i++){
+                Resources res5 = getResources();
+                String str5 = "imageView" + (400 + i);
+                int ident5 = res5.getIdentifier(str5, "id", getPackageName());
+                ImageView test5 = (ImageView) findViewById(ident5);
+                test5.setImageDrawable(null);
+            }
+        }
+    }
+
     //Создание препятствий
     void hole(){
 
         //Установка ямы, если её нет на поле
         if(!isHole){
             holeCoord = (rand.nextInt(5) + 2) * 100;
-            //while(enemyCoord == holeCoord){
-             //   holeCoord = (rand.nextInt(5) + 2) * 100;
-            //}
+            while(holeCoord == enemyCoord || (holeCoord == enemyCoord- 1) || (holeCoord == enemyCoord + 1) || holeCoord == bossCoord){
+                holeCoord = (rand.nextInt(5) + 2) * 100;
+            }
             isHole = true;
         }
 
@@ -259,9 +344,9 @@ public class Game extends AppCompatActivity {
         //Установка противника, если его нет на поле
         if(!isEnemy){
             enemyCoord = (rand.nextInt(5) + 2) * 100;
-            //while(enemyCoord == holeCoord){
-               // enemyCoord = (rand.nextInt(5) + 2) * 100;
-           // }
+            while(enemyCoord/100 == holeCoord/100 || enemyCoord == bossCoord){//ЫЫЫ
+                enemyCoord = (rand.nextInt(5) + 2) * 100;
+            }
             isEnemy = true;
         }
 
@@ -338,6 +423,16 @@ public class Game extends AppCompatActivity {
                 player = MediaPlayer.create(this, R.raw.bang);
                 player.start();
             }
+            //Попадание в босса
+            if(bossCoord == carPosition - i){
+                bossHealth--;
+                player = MediaPlayer.create(this, R.raw.armor);
+                player.start();
+                if(bossHealth == 0){
+                    isBoss = false;
+                    score = score +5;
+                }
+            }
         }
         //Звук
         player = MediaPlayer.create(this, R.raw.fire);
@@ -364,7 +459,7 @@ public class Game extends AppCompatActivity {
             speed = 200;
         }
         else if(score > 3){
-            speed = 300;
+            speed = 250;
         }
     }
 
