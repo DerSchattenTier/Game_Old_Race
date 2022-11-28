@@ -96,6 +96,7 @@ public class Game extends AppCompatActivity {
     //Босс
     int bossCoord;
     int bossHealth = 12;
+    int bossMove = 0;
     boolean isBoss = false;
     //Очистка от пулемётной очереди
     ArrayList<Integer> antiFireList = new ArrayList<>();
@@ -234,7 +235,9 @@ public class Game extends AppCompatActivity {
     //Босс
     void boss(){
 
-        //Отображение
+        bossMove++;
+
+        //Очистка поля
         Resources res = getResources();
         String str = "imageView" + bossCoord;
         int ident = res.getIdentifier(str, "id", getPackageName());
@@ -242,7 +245,7 @@ public class Game extends AppCompatActivity {
         test.setImageDrawable(null);
 
         //Перемещение
-        if(x >= 10 && x <= 12 || x > 15 && x < 18){
+        if(bossMove % 100 > 80){
             bossCoord = 400;
             Resources res2 = getResources();
             String str2 = "imageView" + bossCoord;
@@ -250,7 +253,7 @@ public class Game extends AppCompatActivity {
             ImageView test2 = (ImageView) findViewById(ident2);
             test2.setImageResource(R.drawable.boss);
         }
-        else if (x >= 13 && x <= 15){
+        else if (bossMove % 100 > 70){
             bossCoord = 300;
             Resources res2 = getResources();
             String str2 = "imageView" + bossCoord;
@@ -258,7 +261,31 @@ public class Game extends AppCompatActivity {
             ImageView test2 = (ImageView) findViewById(ident2);
             test2.setImageResource(R.drawable.boss);
         }
-        else if(x >= 18){
+        else if(bossMove % 100 > 60){
+            bossCoord = 200;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if(bossMove % 100 > 50){
+            bossCoord = 300;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if (bossMove % 100 > 40){
+            bossCoord = 400;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if (bossMove % 100 > 30){
             bossCoord = 500;
             Resources res2 = getResources();
             String str2 = "imageView" + bossCoord;
@@ -266,16 +293,41 @@ public class Game extends AppCompatActivity {
             ImageView test2 = (ImageView) findViewById(ident2);
             test2.setImageResource(R.drawable.boss);
         }
+        else if (bossMove % 100 > 20){
+            bossCoord = 600;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else if (bossMove % 100 > 10){
+            bossCoord = 500;
+            Resources res2 = getResources();
+            String str2 = "imageView" + bossCoord;
+            int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+            ImageView test2 = (ImageView) findViewById(ident2);
+            test2.setImageResource(R.drawable.boss);
+        }
+        else{
+        bossCoord = 400;
+        Resources res2 = getResources();
+        String str2 = "imageView" + bossCoord;
+        int ident2 = res2.getIdentifier(str2, "id", getPackageName());
+        ImageView test2 = (ImageView) findViewById(ident2);
+        test2.setImageResource(R.drawable.boss);
+    }
+
 
         //Стрельба Босса
-        if(x == 10 || x == 11){
+        if(bossMove % 10 == 4 || bossMove % 10 == 5){
             Resources res5 = getResources();
             String str5 = "imageView" + (bossCoord + 1);
             int ident5 = res5.getIdentifier(str5, "id", getPackageName());
             ImageView test5 = (ImageView) findViewById(ident5);
             test5.setImageResource(R.drawable.flamethrower);
         }
-        if(x == 12 && bossHealth < 10){
+        if(bossMove % 10 == 6){
 
             for(int i = 2; i < 10; i++){
                 Resources res5 = getResources();
@@ -283,19 +335,19 @@ public class Game extends AppCompatActivity {
                 int ident5 = res5.getIdentifier(str5, "id", getPackageName());
                 ImageView test5 = (ImageView) findViewById(ident5);
                 test5.setImageResource(R.drawable.flamethrower);
-            }
 
-            //Попадание из огнемёта босса
-            if(carPosition == 409){
-                bang();
+                //Попадание из огнемёта босса
+                if(carPosition == (bossCoord + i)){
+                    bang();
+                }
             }
         }
 
         //Очистка поля от огнемёта
-        if(x == 13){
+        if(bossMove % 10 == 7){
             for(int i = 1; i < 10; i++){
                 Resources res5 = getResources();
-                String str5 = "imageView" + (400 + i);
+                String str5 = "imageView" + (bossCoord + i);
                 int ident5 = res5.getIdentifier(str5, "id", getPackageName());
                 ImageView test5 = (ImageView) findViewById(ident5);
                 test5.setImageDrawable(null);
