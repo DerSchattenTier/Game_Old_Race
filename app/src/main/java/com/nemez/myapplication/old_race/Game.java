@@ -82,6 +82,11 @@ public class Game extends AppCompatActivity {
     //Обочина
     int x = 10;
     int y = 20;
+    //Жизни
+    int health = 3;
+    //Доп.жизнь
+    boolean isHeart = false;
+    int heartCoord;
     //Положение машины
     int carPosition = 409;
     //Рандомайзер
@@ -137,6 +142,11 @@ public class Game extends AppCompatActivity {
             //Противники
             if(enemyStart > 14){
                 enemy();
+            }
+
+            //Доп.жизнь
+            if(health == 1 && isBoss){
+                heart();
             }
 
             //Попадание
@@ -361,7 +371,7 @@ public class Game extends AppCompatActivity {
         //Установка ямы, если её нет на поле
         if(!isHole){
             holeCoord = (rand.nextInt(5) + 2) * 100;
-            while(holeCoord == enemyCoord || (holeCoord == enemyCoord- 1) || (holeCoord == enemyCoord + 1) || holeCoord == bossCoord){
+            while(holeCoord == enemyCoord || holeCoord == enemyCoord + 1 || holeCoord == bossCoord || holeCoord == heartCoord || holeCoord == heartCoord + 1){
                 holeCoord = (rand.nextInt(5) + 2) * 100;
             }
             isHole = true;
@@ -425,14 +435,19 @@ public class Game extends AppCompatActivity {
         }
     }
 
-    //Отображение взрыва
+    //Попадание в игрока
     void bang(){
+        //Уменьшение очков жизни
+        health--;
+        //Отображение взрыва
         Resources res = getResources();
         String str = "imageView" + carPosition;
         int ident = res.getIdentifier(str, "id", getPackageName());
         ImageView test = (ImageView) findViewById(ident);
         test.setImageResource(R.drawable.bang);
-        fail();
+        //Проигрыш
+        if(health <= 0){
+        fail();}
     }
 
     //Поворот налево
@@ -520,6 +535,52 @@ public class Game extends AppCompatActivity {
     void gameScore(){
         TextView test = (TextView)findViewById(R.id.scoreView);
         test.setText("SCORE:" + score);
+        TextView test2 = (TextView)findViewById(R.id.healthView);
+        test2.setText("HEALTH: " + health);
+        TextView test3 = (TextView)findViewById(R.id.bossView);
+        test3.setText("___");
+        if(isBoss){
+            test3.setText("BOSS: " + bossHealth);
+        }
+    }
+
+    //Дополнительная жизнь
+    void heart() {
+
+        //Создание сердца
+        if(!isHeart) {
+            heartCoord = (rand.nextInt(5) + 2) * 100;
+            while (heartCoord / 100 == enemyCoord / 100 || heartCoord == bossCoord || heartCoord / 100 == holeCoord / 100) {
+                heartCoord = (rand.nextInt(5) + 2) * 100;
+            }
+            isHeart = true;
+        }
+
+        //Очистка поля
+        if(heartCoord % 10 != 0 || heartCoord == carPosition + 1){
+        Resources res = getResources();
+        String str = "imageView" + (heartCoord - 1);
+        int ident = res.getIdentifier(str, "id", getPackageName());
+        ImageView test = (ImageView) findViewById(ident);
+        test.setImageDrawable(null);
+        }
+        heartCoord = heartCoord + 1;
+        //Отображение
+        Resources res = getResources();
+        String str = "imageView" + (heartCoord - 1);
+        int ident = res.getIdentifier(str, "id", getPackageName());
+        ImageView test = (ImageView) findViewById(ident);
+        test.setImageResource(R.drawable.heart);
+
+        //Получение жизни
+        if(heartCoord == carPosition + 1){
+            health++;
+        }
+
+        //Уход жизни за экран
+        if (heartCoord == 210 || heartCoord == 310 || heartCoord == 410 || heartCoord == 510 || heartCoord == 610) {
+            isHeart = false;
+        }
     }
 
     //Проигрыш
