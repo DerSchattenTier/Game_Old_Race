@@ -86,6 +86,7 @@ public class Game extends AppCompatActivity {
     int health = 3;
     //Доп.жизнь
     boolean isHeart = false;
+    boolean needHelp = true;
     int heartCoord;
     //Положение машины
     int carPosition = 409;
@@ -128,7 +129,7 @@ public class Game extends AppCompatActivity {
             car();
 
             //Босс
-            if (score == 3 && !isBoss) {
+            if (score == 10 && !isBoss) {
                 isBoss = true;
                 bossCoord = 400;
             }
@@ -145,7 +146,7 @@ public class Game extends AppCompatActivity {
             }
 
             //Доп.жизнь
-            if(health == 1 && isBoss){
+            if(health == 1 && isBoss && needHelp){
                 heart();
             }
 
@@ -575,11 +576,14 @@ public class Game extends AppCompatActivity {
         //Получение жизни
         if(heartCoord == carPosition + 1){
             health++;
+            needHelp = false;
+            isHeart = false;
         }
 
         //Уход жизни за экран
         if (heartCoord == 210 || heartCoord == 310 || heartCoord == 410 || heartCoord == 510 || heartCoord == 610) {
             isHeart = false;
+            needHelp = false;
         }
     }
 
