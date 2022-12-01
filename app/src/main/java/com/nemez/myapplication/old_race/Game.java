@@ -372,7 +372,7 @@ public class Game extends AppCompatActivity {
         //Установка ямы, если её нет на поле
         if(!isHole){
             holeCoord = (rand.nextInt(5) + 2) * 100;
-            while(holeCoord == enemyCoord || holeCoord == enemyCoord + 1 || holeCoord == bossCoord || holeCoord == heartCoord || holeCoord == heartCoord + 1){
+            while(holeCoord / 100 == enemyCoord / 100 || holeCoord == bossCoord || holeCoord == heartCoord || holeCoord == (heartCoord + 1)){
                 holeCoord = (rand.nextInt(5) + 2) * 100;
             }
             isHole = true;
